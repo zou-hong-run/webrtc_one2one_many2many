@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat</title>
+    <link rel="stylesheet" href="./assets/css/index.css" />
+  </head>
+  <body>
+    <input id="roomId" type="text" value="123" placeholder="请输入房间号" />
+    <input id="userId" type="text" value="123" placeholder="请输入用户昵称" />
+    <button class="startBtn">开始通话</button>
+    <button class="stopBtn">暂停/恢复通话</button>
+    <button class="videoBtn">视频通话</button>
+    <button class="screenBtn">屏幕共享</button>
+    <div class="video-container">
+      <video autoplay controls muted id="offerVideo"></video>
+      <!-- <video autoplay muted id="answerVideo"></video> -->
+    </div>
+    <!-- 一对一 -->
+    <script type="module" src="./index.js"></script>
+    <!-- 多对多 -->
+    <!-- <script type="module" src="./index2.js"></script> -->
+  </body>
+</html>

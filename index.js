@@ -4,8 +4,8 @@ import path from 'path'
 import https from 'https'
 import { Server } from 'socket.io'
 import { getIpAddress } from "./utils/common.js";
-import { initSDPServer } from "./server/sdp.js";
-// import { initSDPServer } from "./server/sdp2.js";
+// import { initSDPServer } from "./server/sdp.js";
+import { initSDPServer } from "./server/sdp2.js";
 const options = {
   key: fs.readFileSync(path.resolve("./ssl/server.key")),
   cert: fs.readFileSync(path.resolve("./ssl/server.crt"))

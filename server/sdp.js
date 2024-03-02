@@ -38,6 +38,7 @@ const onEvent = (socket) => {
   socket.emit("people-count-msg", roomMap.get(roomId));
   socket.to(roomId).emit("people-count-msg", roomMap.get(roomId));
   socket.to(roomId).emit("room-msg", `welcome: ${userId}`);
+
   socket.on('offer-sdp-msg', (offerSDP) => {
     socket.to(roomId).emit("offer-sdp-msg", offerSDP)
   })

@@ -1,31 +1,39 @@
-import { createPeerConnection, createVideoEle, getLocalMediaStream, setLocalVideoStream, setRemoteVideoStream } from "./utils/common.js";
+import { createPeerConnection, createVideoEle, getLocalMediaStream, getLocalScreenMediaStream, setLocalVideoStream, setRemoteVideoStream } from "./utils/common.js";
 import { io } from "./utils/socket.io.esm.min.js"
 
 
 const roomInput = document.querySelector("#roomId")
-const userInput = document.querySelector("#userId")
-const button = document.querySelector('button');
-let offerVideo = document.querySelector('#offerVideo')
-button.addEventListener('click', async () => {
-  let roomId = roomInput.value;
-  let userId = userInput.value;
-  let localStream = await getLocalMediaStream({ video: true, audio: true });
-  setLocalVideoStream(offerVideo, localStream);
+const userInput = document.querySelector("#userId");
+userInput.value = (Math.random()).toString(16).substring(2);
+const startBtn = document.querySelector('.startBtn');
 
-  /**
+const stopBtn = document.querySelector('.stopBtn');
+const videoBtn = document.querySelector('.videoBtn');
+const screenBtn = document.querySelector('.screenBtn');
+
+let offerVideo = document.querySelector('#offerVideo')
+
+let localStream = await getLocalMediaStream({ video: true, audio: true });
+setLocalVideoStream(offerVideo, localStream);
+/**
    * @type {Map<string,RTCPeerConnection>}
    */
-  let peerMap = new Map();
-  /**
-  * @type {string[]}
-  */
-  let roomUserIdList;
-  /**
-  * @type {string[]}
-  */
-  let connectingUserIdList = [];
-  let isInit = false;
+let peerMap = new Map();
+/**
+* @type {string[]}
+*/
+let roomUserIdList;
+/**
+* @type {string[]}
+*/
+let connectingUserIdList = [];
 
+let isStopAudio = false;
+let isStopVideo = false;
+startBtn.addEventListener('click', async () => {
+  let roomId = roomInput.value;
+  let userId = userInput.value;
+  let isInit = false;
   const serverUrl = "wss://192.168.43.7:3000/";
   const options = {
     reconnectDelayMat: 10000,
@@ -36,7 +44,6 @@ button.addEventListener('click', async () => {
     }
   }
   let client = new io(serverUrl, options);
-
   client.on("connect", () => {
     console.log("Connection successful!");
   })
@@ -149,6 +156,53 @@ button.addEventListener('click', async () => {
   client.on('client-leave', (data) => {
     console.log(data);
   })
+});
+stopBtn.addEventListener("click", () => {
+  isStopAudio = !isStopAudio;
+  isStopVideo = !isStopVideo;
+  for (let id of connectingUserIdList) {
+    let peer = peerMap.get(id);
+    if (peer) {
+      peer.getSenders().find(sender => sender.track.kind === 'audio').track.enabled = !isStopAudio;
+      peer.getSenders().find(sender => sender.track.kind === 'video').track.enabled = !isStopVideo;
+    }
+  }
 })
-
-
+videoBtn.addEventListener("click", async () => {
+  let newStream = await getLocalMediaStream({
+    video: true,
+    audio: true
+  })
+  if (newStream) {
+    localStream = newStream;
+    setLocalVideoStream(offerVideo, localStream);
+    localStream.getVideoTracks().forEach(track => {
+      for (let id of connectingUserIdList) {
+        let peer = peerMap.get(id);
+        if (peer) {
+          peer.getSenders().find(sender => sender.track.kind === 'video').replaceTrack(track)
+        }
+      }
+    })
+  }
+})
+screenBtn.addEventListener("click", async () => {
+  let newStream = await getLocalScreenMediaStream({
+    video: {
+      cursor: 'always' | 'motion' | 'never',
+      displaySurface: 'application' | 'browser' | 'monitor' | 'window'
+    }
+  });
+  if (newStream) {
+    localStream = newStream;
+    setLocalVideoStream(offerVideo, localStream);
+    localStream.getVideoTracks().forEach(track => {
+      for (let id of connectingUserIdList) {
+        let peer = peerMap.get(id);
+        if (peer) {
+          peer.getSenders().find(sender => sender.track.kind === 'video').replaceTrack(track)
+        }
+      }
+    })
+  }
+})

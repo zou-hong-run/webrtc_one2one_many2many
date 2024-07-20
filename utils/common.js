@@ -1,6 +1,4 @@
 import { networkInterfaces } from 'os'
-
-
 /**
  * 获取本机ip地址
  * @returns {string}

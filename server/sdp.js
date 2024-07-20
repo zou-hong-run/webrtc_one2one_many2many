@@ -23,7 +23,7 @@ const onEvent = (socket) => {
   } else {
     roomMap.set(roomId, roomMap.get(roomId) + 1)
   }
-  console.log("新用户加入：房间总人数", roomMap.get(roomId));
+  console.log(`房间：${roomId}新用户加入:${userId}：房间总人数`, roomMap.get(roomId));
   socket.on("disconnect", () => {
     console.log("Client disconnected");
     socket.to(roomId).emit("client-leave", userId + ":leave")

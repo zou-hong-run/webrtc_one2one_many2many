@@ -15,8 +15,8 @@ app.use(express.static("./public"))
 const httpsServer = https.createServer(options, app);
 const io = new Server(httpsServer, { allowEIO3: true, cors: true })
 initSDPServer(io);
-httpsServer.listen(3000, () => {
-  let str = getIpAddress() ? `https://${getIpAddress()}:3000` : `当前网络不可用`;
+httpsServer.listen(3333, () => {
+  let str = getIpAddress() ? `https://${getIpAddress()}:3333` : `当前网络不可用`;
   console.log(str);
 })
 

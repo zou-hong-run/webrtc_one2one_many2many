@@ -34,7 +34,7 @@ startBtn.addEventListener('click', async () => {
   let roomId = roomInput.value;
   let userId = userInput.value;
   let isInit = false;
-  const serverUrl = "wss://192.168.43.7:3000/";
+  const serverUrl = "wss://192.168.0.107:3333/";
   const options = {
     reconnectDelayMat: 10000,
     transports: ["websocket"],

@@ -47,6 +47,6 @@ const onEvent = (socket) => {
   socket.join(roomId);
   socket.emit("user-id-list-msg", [...roomMap.get(roomId)]);
   socket.to(roomId).emit("user-id-list-msg", [...roomMap.get(roomId)]);
-  socket.to(roomId).emit("room-msg", "我踏马来了" + userId);
+  socket.to(roomId).emit("room-msg", "我来了" + userId);
   console.log("房间总人数", roomMap.get(roomId).size);
 }

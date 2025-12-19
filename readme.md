@@ -7,15 +7,18 @@
 ```
 npm i
 ```
+
 一对一通讯
 ```
-/public/index.html 需要导入index.js
+/public/index.html 需要导入index.js，注意修改里面的const serverUrl = "wss://192.168.0.107:3333/";切换为你电脑本地的ip地址
+
 /index.js 下面需要导入 spd.js
 
 ```
 多对多通讯
 ```
-/public/index.html 需要导入index2.js
+/public/index.html 需要导入index2.js，注意修改里面的const serverUrl = "wss://192.168.0.107:3333/";切换为你电脑本地的ip地址
+
 index.js 下面需要导入 spd2.js
 ```
 

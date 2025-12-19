@@ -24,7 +24,7 @@ let roomId;
 let userId;
 let isInited = false;
 let isRoomFull = false;
-const serverUrl = "wss://127.0.0.1:3333/";
+const serverUrl = "wss://192.168.0.107:3333/";
 stopBtn.addEventListener('click', () => {
   if (peer) {
     isStopAudio = !isStopAudio;
